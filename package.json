@@ -1,7 +1,7 @@
 {
-  "name": "chrome-extension-boilerplate-react-vite",
-  "version": "0.0.1",
-  "description": "chrome extension boilerplate",
+  "name": "pin-my-chat",
+  "version": "1.7.0",
+  "description": "Pin your chat history from ChatGPT to a list for easy access.",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -17,6 +17,10 @@
   },
   "type": "module",
   "dependencies": {
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.11.16",
+    "@mui/material": "^5.13.3",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
@@ -25,7 +29,7 @@
     "@testing-library/react": "13.4.0",
     "@types/chrome": "0.0.224",
     "@types/jest": "29.0.3",
-    "@types/node": "18.15.11",
+    "@types/node": "^18.15.11",
     "@types/react": "18.0.21",
     "@types/react-dom": "18.2.4",
     "@types/ws": "^8.5.4",
