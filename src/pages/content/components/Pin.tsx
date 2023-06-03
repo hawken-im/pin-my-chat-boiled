@@ -56,6 +56,11 @@ export default function Pin(props: Props) {
       setTip(`Pin My Chat: ${props.title}`);
       setIsPinned(false);
     }
+    // chrome.runtime.onMessage.addListener((request) => {
+    //   if (request.action === "update_data") {
+    //     console.log("pin button: update_data received");
+    //   }
+    // });
   }, []);
 
   const handleClose = (

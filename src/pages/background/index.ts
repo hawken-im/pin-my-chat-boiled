@@ -10,8 +10,14 @@ reloadOnUpdate("pages/content/style.scss");
 
 //TODO: try this listener
 // chrome.runtime.onMessage.addListener((request) => {
-//   if (request.action === "open_options_page") {
-//     chrome.runtime.openOptionsPage();
+//   if (request.action === "title_changed") {
+//     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+//       if (tabs[0]) {
+//         chrome.tabs.sendMessage(tabs[0].id, {
+//           action: "chage_title",
+//         });
+//       }
+//     });
 //   }
 // });
 
@@ -30,16 +36,16 @@ reloadOnUpdate("pages/content/style.scss");
 //   }
 // });
 
-function sendMessageToActiveTab() {
-  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-    if (tabs[0]) {
-      chrome.tabs.sendMessage(tabs[0].id, {
-        action: "greets",
-      });
-    }
-  });
-}
+// function sendMessageToActiveTab() {
+//   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+//     if (tabs[0]) {
+//       chrome.tabs.sendMessage(tabs[0].id, {
+//         action: "greets",
+//       });
+//     }
+//   });
+// }
 
-setInterval(sendMessageToActiveTab, 2000);
+// setInterval(sendMessageToActiveTab, 5000);
 
 console.log("background loaded");

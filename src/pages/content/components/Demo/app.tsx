@@ -27,25 +27,6 @@ function useUrlChange(onUrlChange) {
   }, [onUrlChange]);
 }
 
-function useTitleChange(onTitleChange) {
-  useEffect(() => {
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.type === "childList") {
-          onTitleChange();
-        }
-      });
-    });
-
-    const targetNode = document.querySelector("body");
-    observer.observe(targetNode, { childList: true, subtree: true });
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [onTitleChange]);
-}
-
 function addStackToNav() {
   const nav = document.querySelector("nav");
   if (nav) {
@@ -63,60 +44,14 @@ function addStackToNav() {
     }
     createRoot(stack).render(
       <Stack
-        direction="row-reverse"
-        justifyContent="space-between"
-        alignItems="center"
+        direction="column"
+        justifyContent="flex-start"
+        alignItems="stretch"
         spacing={2}
       ></Stack>
     );
   } else {
     console.log("No <nav> element found on the page.");
-  }
-}
-
-async function addPinToStack(title, chatId, isPinned) {
-  let parent = document.querySelector("#pin-my-chat-stack");
-  for (let i = 0; i < 10 && !parent; i++) {
-    if (!parent) {
-      console.log("No <stack> element found on the page.");
-      await sleep(500 * i + 500);
-      parent = document.querySelector("#pin-my-chat-stack");
-      if (parent) {
-        break;
-      } else {
-        addStackToNav();
-        continue;
-      }
-    } else {
-      break;
-    }
-  }
-  const stack = parent.querySelector(":first-child");
-  if (!stack) {
-    console.log("No <stack> child element found on the page.");
-    await sleep(1500);
-  }
-  if (stack) {
-    //select button with id "pin-my-chat-button" if it exists
-    const oldButton = document.querySelector("#pin-my-chat-button");
-    if (oldButton) {
-      //if button exists, remove it
-      oldButton.remove();
-    }
-    const button = document.createElement("div");
-    button.id = "pin-my-chat-button";
-
-    const list = document.querySelector("#pin-my-chat-list");
-    if (list) {
-      stack.insertBefore(button, list);
-    } else {
-      stack.appendChild(button);
-    }
-    createRoot(button).render(
-      <Pin title={title} chatId={chatId} pinned={isPinned} />
-    );
-  } else {
-    console.log("add pin failed");
   }
 }
 
@@ -165,11 +100,41 @@ function extractChatId(url) {
 }
 
 export default function App() {
-  const [pinnedChatsReady, setPinnedChatsReady] = useState(false);
   const [pinnedChats, setPinnedChats] = useState([]);
   const [currentURL, setCurrentURL] = useState("");
-  //const [initElement, setInitElement] = useState(null);
-  const [currentTitle, setCurrentTitle] = useState("");
+
+  async function addPinToStack(title, chatId, isPinned) {
+    let parent = document.querySelector("#pin-my-chat-readyforpin");
+    for (let i = 0; i < 10 && !parent; i++) {
+      if (!parent) {
+        console.log("No readyforpin found on the page.");
+        await sleep(500 * i + 500);
+        parent = document.querySelector("#pin-my-chat-readyforpin");
+        if (parent) {
+          break;
+        } else {
+          addListToStack(pinnedChats);
+          continue;
+        }
+      } else {
+        break;
+      }
+    }
+    //select button with id "pin-my-chat-button" if it exists
+    const oldButton = document.querySelector("#pin-my-chat-button");
+    if (oldButton) {
+      //if button exists, remove it
+      oldButton.remove();
+    }
+    const button = document.createElement("div");
+    button.id = "pin-my-chat-button";
+
+    parent.appendChild(button);
+
+    createRoot(button).render(
+      <Pin title={title} chatId={chatId} pinned={isPinned} />
+    );
+  }
 
   // Function to handle URL changes
   function handleUrlChange() {
@@ -185,14 +150,6 @@ export default function App() {
     } else if (changedURL.startsWith("https://chat.openai.com/c/")) {
       // Inject content for the second type of URL
       return false;
-    }
-  }
-
-  async function handleIElementTitleChange() {
-    const changedTitle = await getElementTitle();
-    if (changedTitle !== currentTitle) {
-      console.log("Title changed!");
-      setCurrentTitle(changedTitle);
     }
   }
 
@@ -222,6 +179,7 @@ export default function App() {
   };
 
   async function processAddPin(isNewChat: boolean) {
+    let linkAlreadyPinned: boolean;
     if (isNewChat) {
       addPinToStack("N23P1N8X9Q8N97L", "none", true);
     } else {
@@ -239,7 +197,7 @@ export default function App() {
             chrome.storage.sync.get("pinnedChats", (data) => {
               const pinnedChats = data.pinnedChats || [];
               // Check if the link is already in the pinnedChats array
-              const linkAlreadyPinned: boolean = pinnedChats.some(
+              linkAlreadyPinned = pinnedChats.some(
                 (chat) => chat.id === newChatId
               );
 
@@ -254,7 +212,6 @@ export default function App() {
                   }
                 });
               }
-              setCurrentTitle(newTitle);
               addPinToStack(newTitle, newChatId, linkAlreadyPinned);
             });
           });
@@ -266,66 +223,25 @@ export default function App() {
   }
 
   async function init() {
-    setPinnedChatsReady(false);
-    //const iElement = await getInitElement();
-    //setInitElement(iElement);
+    //setPinnedChatsReady(false);
     addStackToNav();
-    await sleep(1000);
-    await processAddPin(handleUrlChange());
-    await sleep(500);
     chrome.storage.sync.get("pinnedChats", (data) => {
       const pinnedChats = data.pinnedChats || [];
       setPinnedChats(pinnedChats);
-      setPinnedChatsReady(true);
+      addListToStack(pinnedChats);
+      // setPinnedChatsReady(true);
     });
+
+    await sleep(1000);
+    await processAddPin(handleUrlChange());
+    await sleep(500);
   }
 
   useEffect(() => {
-    // chrome.runtime.sendMessage(
-    //   { type: "greeting", message: "Hello from content.js!" },
-    //   function (response) {
-    //     console.log(response.message);
-    //   }
-    // );
-    chrome.runtime.onMessage.addListener((request) => {
-      if (request.action === "greets") {
-        //chrome.runtime.openOptionsPage();
-        console.log("greets received");
-      }
-    });
-
     sleep(1000).then(() => {
       init();
     });
   }, []);
-
-  useEffect(() => {
-    if (pinnedChatsReady) {
-      addListToStack(pinnedChats);
-      sleep(500).then(async () => {
-        for (let i = 0; i < 3; i++) {
-          const parent = document.querySelector("#pin-my-chat-stack");
-          if (parent === null) {
-            await sleep(500 * i + 100);
-            continue;
-          }
-          if (parent) {
-            const pinnedChatsElement = document.querySelector(
-              "#pin-my-chat-pinnedchats"
-            );
-            if (pinnedChatsElement === null) {
-              await sleep(500 * i + 100);
-              continue;
-            }
-            if (pinnedChatsElement) {
-              parent.appendChild(pinnedChatsElement);
-              i = 3;
-            }
-          }
-        }
-      });
-    }
-  }, [pinnedChatsReady]);
 
   useEffect(() => {
     console.log("URL changed! Apply UseEffect");
@@ -333,20 +249,9 @@ export default function App() {
     init();
   }, [currentURL]);
 
-  useEffect(() => {
-    console.log("Title changed! Apply UseEffect");
-    //TODO: add listener to title change(try both background and content)
-    chrome.runtime.sendMessage({ action: "title_changed" });
-  }, [currentTitle]);
-
   useUrlChange(() => {
     console.log("Observer URL changed!");
     handleUrlChange();
-  });
-
-  useTitleChange(() => {
-    console.log("Observer Title changed!");
-    handleIElementTitleChange();
   });
 
   return <div className="hello-pin-my-chat"></div>;

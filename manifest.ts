@@ -15,7 +15,7 @@ const manifest: chrome.runtime.ManifestV3 = {
   permissions: ["activeTab", "storage"],
   action: {
     default_popup: "src/pages/popup/index.html",
-    default_icon: "icon-34.png",
+    default_icon: "icon-32.png",
   },
   icons: {
     "128": "icon-128.png",
@@ -35,7 +35,8 @@ const manifest: chrome.runtime.ManifestV3 = {
         "assets/js/*.js",
         "assets/css/*.css",
         "icon-128.png",
-        "icon-34.png",
+        "icon-32.png",
+        "logo.png",
       ],
       matches: ["*://*/*"],
     },
