@@ -74,7 +74,7 @@ export default function PinnedList(props: Props) {
                       aria-label="unpin"
                       sx={{ width: 24, height: 24 }}
                       onClick={() => {
-                        console.log("unpinning");
+                        //console.log("unpinning");
                         chrome.storage.sync.get("pinnedChats", (data) => {
                           const pinnedChats = data.pinnedChats || [];
                           const newPinnedChats = pinnedChats.filter(

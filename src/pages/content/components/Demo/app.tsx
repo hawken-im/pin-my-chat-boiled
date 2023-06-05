@@ -51,7 +51,7 @@ function addStackToNav() {
       ></Stack>
     );
   } else {
-    console.log("No <nav> element found on the page.");
+    //console.log("No <nav> element found on the page.");
   }
 }
 
@@ -59,7 +59,7 @@ async function addListToStack(pinnedChats) {
   let parent = document.querySelector("#pin-my-chat-stack");
   for (let i = 0; i < 10 && !parent; i++) {
     if (!parent) {
-      console.log("add list: No <stack> element found on the page.");
+      //console.log("add list: No <stack> element found on the page.");
       await sleep(500 * i + 500);
       parent = document.querySelector("#pin-my-chat-stack");
       if (parent) {
@@ -107,7 +107,7 @@ export default function App() {
     let parent = document.querySelector("#pin-my-chat-readyforpin");
     for (let i = 0; i < 10 && !parent; i++) {
       if (!parent) {
-        console.log("No readyforpin found on the page.");
+        //console.log("No readyforpin found on the page.");
         await sleep(500 * i + 500);
         parent = document.querySelector("#pin-my-chat-readyforpin");
         if (parent) {
@@ -140,7 +140,7 @@ export default function App() {
   function handleUrlChange() {
     const changedURL = window.location.href;
     if (changedURL !== currentURL) {
-      console.log("URL changed!");
+      //console.log("URL changed!");
       setCurrentURL(changedURL);
     }
 
@@ -151,6 +151,7 @@ export default function App() {
       // Inject content for the second type of URL
       return false;
     }
+    return true;
   }
 
   async function getElementTitle() {
@@ -171,7 +172,7 @@ export default function App() {
         await sleep(500 * i + 100);
         continue;
       } else {
-        console.log("Found init element!");
+        //console.log("Found init element!");
         return element;
       }
     }
@@ -205,7 +206,7 @@ export default function App() {
               if (linkAlreadyPinned) {
                 pinnedChats.forEach((chat) => {
                   if (chat.id === newChatId && chat.title !== newTitle) {
-                    console.log("updating title");
+                    //console.log("updating title");
                     chat.title = newTitle;
                     chrome.storage.sync.set({ pinnedChats: pinnedChats });
                     setPinnedChats(pinnedChats);
@@ -244,13 +245,13 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    console.log("URL changed! Apply UseEffect");
+    //console.log("URL changed! Apply UseEffect");
     //processAddPin(handleUrlChange());
     init();
   }, [currentURL]);
 
   useUrlChange(() => {
-    console.log("Observer URL changed!");
+    //console.log("Observer URL changed!");
     handleUrlChange();
   });
 

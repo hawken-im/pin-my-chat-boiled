@@ -12,7 +12,7 @@ const manifest: chrome.runtime.ManifestV3 = {
     service_worker: "src/pages/background/index.js",
     type: "module",
   },
-  permissions: ["activeTab", "storage"],
+  permissions: ["storage"],
   action: {
     default_popup: "src/pages/popup/index.html",
     default_icon: "icon-32.png",

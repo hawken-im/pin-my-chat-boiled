@@ -47,7 +47,7 @@ export default function Pin(props: Props) {
   useEffect(() => {
     if (props.pinned) {
       if (props.title === "N23P1N8X9Q8N97L") {
-        setTip("Title Not Found - Refresh Page");
+        setTip("Title Not Found - Refresh page or click on a chat");
       } else {
         setTip(`${props.title} Already Pinned`);
         setIsPinned(true);
