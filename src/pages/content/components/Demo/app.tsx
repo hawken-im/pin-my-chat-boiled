@@ -153,7 +153,11 @@ export default function App() {
 
   async function getCurrentTabTitle() {
     //get document.title:
-    const title = document.title;
+    let title = document.title;
+    if (title === "ChatGPT") {
+      await sleep(2000);
+      title = document.title;
+    }
     return title;
   }
 

@@ -76,7 +76,7 @@ export default function PinnedList(props: Props) {
                   key={element.id}
                   style={{
                     padding: "4px 8px",
-                    borderBottom: "1px solid #f0f0f0",
+                    borderBottom: "0.5px solid #494a4d",
                     display: "flex",
                     justifyContent: "space-between",
                   }}
