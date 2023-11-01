@@ -49,3 +49,17 @@ reloadOnUpdate("pages/content/style.scss");
 // setInterval(sendMessageToActiveTab, 5000);
 
 console.log("background loaded");
+
+// chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+//   if (request.message === "get_tab_title") {
+//     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+//       const currentTab = tabs[0];
+//       if (currentTab) {
+//         sendResponse({ title: currentTab.title || "No title" });
+//       } else {
+//         sendResponse({ title: "No active tab" });
+//       }
+//     });
+//     return true; // This is important to make async sendResponse work.
+//   }
+// });

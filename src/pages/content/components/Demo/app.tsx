@@ -3,10 +3,7 @@ import Pin from "@pages/content/components/Pin";
 import { createRoot } from "react-dom/client";
 import { sleep } from "@src/utils";
 import Stack from "@mui/material/Stack";
-import PinnedList from "@src/PinnedList";
-
-const initSelector =
-  "a.flex.py-3.px-3.items-center.gap-3.relative.rounded-md.bg-gray-800.hover\\:bg-gray-800";
+import PinnedList from "@src/PinnedListOnPage";
 
 function useUrlChange(onUrlChange) {
   useEffect(() => {
@@ -154,30 +151,11 @@ export default function App() {
     return true;
   }
 
-  async function getElementTitle() {
-    const element = await getInitElement();
-    if (element) {
-      const contentElement = element.querySelector(".flex-1.text-ellipsis");
-      const title = contentElement.textContent.trim();
-      return title;
-    } else {
-      return null;
-    }
+  async function getCurrentTabTitle() {
+    //get document.title:
+    const title = document.title;
+    return title;
   }
-
-  const getInitElement = async () => {
-    const element = document.querySelector(initSelector);
-    for (let i = 0; i < 3; i++) {
-      if (element === null) {
-        await sleep(500 * i + 100);
-        continue;
-      } else {
-        //console.log("Found init element!");
-        return element;
-      }
-    }
-    return element;
-  };
 
   async function processAddPin(isNewChat: boolean) {
     let linkAlreadyPinned: boolean;
@@ -186,7 +164,7 @@ export default function App() {
     } else {
       for (let i = 0; i < 3; i++) {
         await sleep(100);
-        const newTitle = await getElementTitle();
+        const newTitle = await getCurrentTabTitle();
         if (newTitle === null) {
           await sleep(500 * i + 100);
           continue;
@@ -196,6 +174,13 @@ export default function App() {
 
           sleep(1000).then(() => {
             chrome.storage.sync.get("pinnedChats", (data) => {
+              if (data.pinnedChats === undefined) {
+                data.pinnedChats = [];
+              }
+              if (chrome.runtime.lastError) {
+                console.error(chrome.runtime.lastError);
+                return;
+              }
               const pinnedChats = data.pinnedChats || [];
               // Check if the link is already in the pinnedChats array
               linkAlreadyPinned = pinnedChats.some(

@@ -62,7 +62,7 @@ export default function PinnedList(props: Props) {
           <List
             component="div"
             disablePadding
-            sx={{ width: "100%", maxWidth: 360 }}
+            sx={{ width: "100%", maxWidth: 480 }}
             dense
           >
             {listItems.map((element) => {
@@ -92,7 +92,7 @@ export default function PinnedList(props: Props) {
                       />
                     </IconButton>
                   }
-                  sx={{ width: "100%", maxWidth: 360 }}
+                  sx={{ width: "100%", maxWidth: 480 }}
                   key={element.id}
                 >
                   <ListItemButton

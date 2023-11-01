@@ -53,7 +53,7 @@ export default function Pin(props: Props) {
         setIsPinned(true);
       }
     } else {
-      setTip(`Pin My Chat: ${props.title}`);
+      setTip(`Pin: ${props.title}`);
       setIsPinned(false);
     }
     // chrome.runtime.onMessage.addListener((request) => {
