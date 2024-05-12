@@ -57,7 +57,7 @@ export default function Popup() {
                 <ListItemText
                   primary={
                     <a
-                      href={`https://chat.openai.com/`}
+                      href={`https://chatgpt.com/`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -74,7 +74,7 @@ export default function Popup() {
                 <ListItemText
                   primary={
                     <a
-                      href={`https://chat.openai.com/c/${item.id}`}
+                      href={`https://chatgpt.com/c/${item.id}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >

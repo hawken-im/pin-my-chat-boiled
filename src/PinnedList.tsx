@@ -97,7 +97,7 @@ export default function PinnedList(props: Props) {
                 >
                   <ListItemButton
                     onClick={() => {
-                      window.location.href = `https://chat.openai.com/c/${element.id}`;
+                      window.location.href = `https://chatgpt.com/c/${element.id}`;
                     }}
                     sx={{ py: 0, minHeight: 32, color: "rgba(255,255,255,.8)" }}
                   >

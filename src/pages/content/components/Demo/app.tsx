@@ -141,10 +141,10 @@ export default function App() {
       setCurrentURL(changedURL);
     }
 
-    if (changedURL.startsWith("https://chat.openai.com/?")) {
+    if (changedURL.startsWith("https://chatgpt.com/?")) {
       // Inject content for the first type of URL
       return true;
-    } else if (changedURL.startsWith("https://chat.openai.com/c/")) {
+    } else if (changedURL.startsWith("https://chatgpt.com/c/")) {
       // Inject content for the second type of URL
       return false;
     }

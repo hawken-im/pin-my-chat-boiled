@@ -85,7 +85,7 @@ export default function PinnedList(props: Props) {
                 >
                   <button
                     onClick={() => {
-                      window.location.href = `https://chat.openai.com/c/${element.id}`;
+                      window.location.href = `https://chatgpt.com/c/${element.id}`;
                     }}
                     style={{
                       backgroundColor: "transparent",
